@@ -16,3 +16,9 @@ pytest-cov==5.0.0
 
 # ---- Code Quality ----
 ruff==0.6.9reportlab==4.2.2
+
+# ---- Embedding ----
+sentence-transformers==3.3.1
+
+# ---- Vector Database ----
+chromadb>=1.5.4,<2.0.0
