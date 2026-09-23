@@ -1,0 +1,22 @@
+{
+  "source_path": "data\\raw\\employee_handbook.pdf",
+  "source_name": "employee_handbook.pdf",
+  "total_pages": 3,
+  "pages": [
+    {
+      "page_number": 1,
+      "text": "Employee Handbook\nAcme Corporation — Version 3.2\nEffective: January 2024\nSection 1: Introduction\nWelcome to Acme Corporation. This handbook outlines the policies\nand procedures that govern your employment. Please read it carefully\nand refer to it whenever you have questions about company policy.\nThe information in this handbook is subject to change. The most\ncurrent version is always available on the company intranet.",
+      "char_count": 421
+    },
+    {
+      "page_number": 2,
+      "text": "Section 4.2: Vacation Policy\nEmployees receive 15 days of paid annual leave per calendar year.\nLeave accrues monthly at 1.25 days per month. Unused leave may be\ncarried over to the following year, up to a maximum of 5 days.\nRequests for vacation must be submitted at least two weeks in advance\nthrough the HR portal. Approval is subject to manager discretion and\nbusiness needs. During peak periods, requests may be denied.\nEmployees who leave the company will be paid out for accrued but\nunused vacation days in their final paycheck.",
+      "char_count": 534
+    },
+    {
+      "page_number": 3,
+      "text": "Section 7.1: Password Policy\nAll company accounts must use passwords that meet the following\nrequirements: minimum 12 characters, at least one uppercase letter,\none lowercase letter, one number, and one special character.\nPasswords must be changed every 90 days. Reuse of the previous\nfive passwords is prohibited. Multi-factor authentication (MFA)\nis required for all accounts with access to production systems.\nSuspected password compromise must be reported to security@acme.com\nwithin 24 hours.",
+      "char_count": 497
+    }
+  ]
+}
