@@ -29,3 +29,5 @@ google-genai>=0.3.0
 
 google-genai>=0.3.0
 google-genai>=2.24.0
+streamlit>=1.40.0
+requests>=2.32.0
