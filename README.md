@@ -35,3 +35,23 @@ User Question → Embedding → Retrieval → LLM → Answer + Citations
                                                     ↓
                                                Evaluation
 ```
+
+## Evaluation
+
+KnowledgeOps AI is evaluated against a hand-crafted 15-case benchmark
+(11 answerable, 4 unanswerable) built from the sample employee handbook.
+
+| Metric | Score |
+|---|---|
+| Retrieval hit rate | 11/11 (100%) |
+| Answer accuracy | 8/11 (73%) |
+| Faithfulness (LLM-as-judge) | 11/11 (100%) |
+| Not-found accuracy | 4/4 (100%) |
+| Citation presence | 11/11 (100%) |
+
+Total score: 95%
+
+Run the evaluation yourself:
+
+```bash
+python -m evaluation.evaluator
