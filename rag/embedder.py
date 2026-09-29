@@ -23,7 +23,7 @@ class Embedder:
         self.model_name = model_name
         self.model = _load_model(model_name)
         # Get the dimension (384 for all-MiniLM-L6-v2)
-        self.dimension = self.model.get_sentence_embedding_dimension()
+        self.dimension = self.model.get_embedding_dimension()
 
     def embed(self, texts: list[str]) -> list[list[float]]:
         """Embed a batch of texts. Returns a list of vectors."""

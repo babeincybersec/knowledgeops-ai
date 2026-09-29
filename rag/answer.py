@@ -14,7 +14,8 @@ SYSTEM_PROMPT = """You are a helpful assistant answering questions about company
 RULES:
 1. Answer ONLY using the information in the CONTEXT provided by the user.
 2. Every fact in your answer must come from the context. Do not use outside knowledge.
-3. Cite sources using bracket notation like [1], [2] matching the CONTEXT chunks.
+3. 3. Cite sources using ASCII square brackets like [1] or [2] matching the CONTEXT
+   chunks. Use ASCII brackets only — never fullwidth brackets like 【1】.
 4. If the context does not contain the answer, respond with exactly this sentence:
    "I couldn't find this information in the available documentation."
 5. Do not invent policies, names, dates, numbers, or references.
@@ -23,6 +24,19 @@ RULES:
 
 NOT_FOUND_SENTENCE = "I couldn't find this information in the available documentation."
 
+def _normalize_citations(text: str) -> str:
+    """
+    Convert fullwidth/curly citation brackets to ASCII square brackets.
+
+    Some models (GPT-OSS, Qwen) produce 【1】 or ｢1｣ instead of [1].
+    We normalize so citation parsing and display are consistent.
+    """
+    return (
+        text.replace("【", "[").replace("】", "]")   # fullwidth
+            .replace("｢", "[").replace("｣", "]")   # halfwidth corner
+            .replace("〔", "[").replace("〕", "]")   # tortoise shell
+    )
+    
 
 @dataclass
 class Source:
@@ -114,8 +128,11 @@ def answer_question(
     user_prompt = _build_user_prompt(question, context)
 
     # Step 4: generate
-    raw_answer = llm_client.complete(SYSTEM_PROMPT, user_prompt).strip()
-
+           # Step 4: generate + normalize citation brackets
+    raw_answer = _normalize_citations(
+        llm_client.complete(SYSTEM_PROMPT, user_prompt).strip()
+    )
+    
     # Did the model say it couldn't find it?
     if NOT_FOUND_SENTENCE.lower() in raw_answer.lower():
         return Answer(
