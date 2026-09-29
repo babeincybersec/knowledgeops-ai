@@ -1,0 +1,113 @@
+{
+  "description": "Evaluation test set for KnowledgeOps AI. Hand-crafted from employee_handbook.pdf.",
+  "cases": [
+    {
+      "id": "q01",
+      "question": "How many vacation days do employees receive per year?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 2,
+      "expected_keywords": ["15 days"]
+    },
+    {
+      "id": "q02",
+      "question": "At what rate does vacation leave accrue?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 2,
+      "expected_keywords": ["1.25"]
+    },
+    {
+      "id": "q03",
+      "question": "How many unused vacation days can be carried over?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 2,
+      "expected_keywords": ["5 days"]
+    },
+    {
+      "id": "q04",
+      "question": "How far in advance must I request vacation?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 2,
+      "expected_keywords": ["two weeks"]
+    },
+    {
+      "id": "q05",
+      "question": "What is the minimum password length?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 3,
+      "expected_keywords": ["12"]
+    },
+    {
+      "id": "q06",
+      "question": "How often must passwords be changed?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 3,
+      "expected_keywords": ["90 days"]
+    },
+    {
+      "id": "q07",
+      "question": "How many previous passwords cannot be reused?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 3,
+      "expected_keywords": ["five"]
+    },
+    {
+      "id": "q08",
+      "question": "Is multi-factor authentication required?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 3,
+      "expected_keywords": ["MFA"]
+    },
+    {
+      "id": "q09",
+      "question": "How soon must I report a suspected password compromise?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 3,
+      "expected_keywords": ["24 hours"]
+    },
+    {
+      "id": "q10",
+      "question": "What is the vacation policy section number?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 2,
+      "expected_keywords": ["4.2"]
+    },
+    {
+      "id": "q11",
+      "question": "What is the password policy section number?",
+      "answerable": true,
+      "expected_source": "employee_handbook.pdf",
+      "expected_page": 3,
+      "expected_keywords": ["7.1"]
+    },
+    {
+      "id": "q12",
+      "question": "What is the company's maternity leave policy?",
+      "answerable": false
+    },
+    {
+      "id": "q13",
+      "question": "What is the CEO's email address?",
+      "answerable": false
+    },
+    {
+      "id": "q14",
+      "question": "How do I request a new laptop?",
+      "answerable": false
+    },
+    {
+      "id": "q15",
+      "question": "What is the stock option vesting schedule?",
+      "answerable": false
+    }
+  ]
+}

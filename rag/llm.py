@@ -68,8 +68,8 @@ class GeminiClient:
 # ============================================================
 
 class GroqClient:
-    DEFAULT_MODEL = "llama-3.3-70b-versatile"
-
+    DEFAULT_MODEL = "openai/gpt-oss-120b"   # was: llama-3.3-70b-versatile
+    
     def __init__(self, model: str | None = None):
         from groq import Groq  # lazy import
 
