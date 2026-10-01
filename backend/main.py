@@ -28,6 +28,7 @@ from backend.models import (
 )
 from rag.answer import answer_question
 from rag.chunker import chunk_document
+from rag.incremental import run_incremental
 from rag.pipeline import index_document
 
 
@@ -160,6 +161,31 @@ def reindex_all() -> IndexResponse:
             status_code=404,
             detail=f"No documents found in {PROCESSED_DIR}. Run ingestion first.",
         )
+
+        from rag.incremental import run_incremental
+
+
+@app.post("/documents/incremental", response_model=IndexResponse)
+def reindex_incremental() -> IndexResponse:
+    """
+    Reindex only documents whose content hash has changed.
+
+    Returns a summary of what was processed vs. skipped.
+    """
+    result = run_incremental(force=False, dry_run=False)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+
+    return IndexResponse(
+        source_name=f"{len(result['new_or_changed'])} changed of {result['total_pdfs']}",
+        chunks_indexed=result["indexed_chunks"],
+        message=(
+            f"Processed {len(result['new_or_changed'])} file(s), "
+            f"skipped {len(result['unchanged'])}. "
+            f"Deleted {result['deleted_chunks']} stale chunks, "
+            f"added {result['indexed_chunks']} new chunks."
+        ),
+    )
 
     return IndexResponse(
         source_name=f"{indexed_files} document(s)",

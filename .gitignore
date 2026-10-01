@@ -5,3 +5,5 @@ chroma_db/
 __pycache__/
 .streamlit/
 evaluation/report.json
+data/processed/.index_state.json
+data/raw/employee_handbook.pdf: generate test PDF with known content
