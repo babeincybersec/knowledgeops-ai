@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: .
+    image: knowledgeops-ai:latest
+    container_name: knowledgeops-backend
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      # Mount data and chroma_db so indexing persists across container restarts
+      - ./data:/app/data
+      - ./chroma_db:/app/chroma_db
+    restart: unless-stopped
+
+  frontend:
+    build: .
+    image: knowledgeops-ai:latest
+    container_name: knowledgeops-frontend
+    ports:
+      - "8501:8501"
+    env_file: .env
+    environment:
+      - API_URL=http://backend:8000
+    volumes:
+      - ./frontend:/app/frontend
+    depends_on:
+      - backend
+    command: ["streamlit", "run", "frontend/app.py",
+              "--server.port=8501", "--server.address=0.0.0.0"]
+    restart: unless-stopped

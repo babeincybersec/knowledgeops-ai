@@ -6,10 +6,15 @@ Docs:
     http://localhost:8000/docs
 """
 
+import os
+import time
+import logging
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, UploadFile, File, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
 
 from backend.dependencies import (
     get_embedder,
@@ -31,6 +36,15 @@ from rag.chunker import chunk_document
 from rag.incremental import run_incremental
 from rag.pipeline import index_document
 
+import time
+import logging
+
+from fastapi import Request
+from backend.logging_config import (
+    configure_logging,
+    new_request_id,
+    request_id_var,
+)
 
 app = FastAPI(
     title="KnowledgeOps AI",
@@ -47,6 +61,46 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Configure structured logging at import time
+configure_logging(level=os.getenv("LOG_LEVEL", "INFO"))
+logger = logging.getLogger("knowledgeops.api")
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    """Assign a request ID, time the request, log the outcome."""
+    req_id = new_request_id()
+    request_id_var.set(req_id)
+    start = time.perf_counter()
+
+    try:
+        response = await call_next(request)
+        latency_ms = round((time.perf_counter() - start) * 1000, 1)
+        logger.info(
+            "request completed",
+            extra={
+                "event": "http_request",
+                "method": request.method,
+                "path": request.url.path,
+                "status": response.status_code,
+                "latency_ms": latency_ms,
+            },
+        )
+        response.headers["X-Request-ID"] = req_id
+        return response
+    except Exception as e:
+        latency_ms = round((time.perf_counter() - start) * 1000, 1)
+        logger.exception(
+            "request failed",
+            extra={
+                "event": "http_error",
+                "method": request.method,
+                "path": request.url.path,
+                "status": 500,
+                "latency_ms": latency_ms,
+            },
+        )
+        raise
 
 # ============================================================
 # Health check
@@ -61,7 +115,26 @@ def health() -> HealthResponse:
         llm_provider=get_provider_name(),
     )
 
+@app.get("/live")
+def live() -> dict:
+    """Liveness probe: process is up."""
+    return {"status": "alive"}
 
+
+@app.get("/ready")
+def ready() -> dict:
+    """Readiness probe: dependencies are reachable."""
+    try:
+        store = get_store()
+        count = store.count()
+        return {
+            "status": "ready",
+            "vector_store_count": count,
+            "llm_provider": get_provider_name(),
+        }
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Not ready: {e}")
+        
 # ============================================================
 # /query — ask a question
 # ============================================================
